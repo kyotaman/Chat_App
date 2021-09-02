@@ -79,7 +79,7 @@
                         <v-btn
                         class="teal lighten-3  white--text font-weight-bold mt-10 mb-4 px-12"
                         inlineblock
-                        v-bind:to="{name: 'Top'}">
+                        v-bind:to="{name: 'top'}">
                         ログアウト
                         </v-btn>
                         </v-card>
@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:78'
+
+import {axios, moment} from '../../router/index'
 
 export default {
   data: function () {
@@ -104,18 +104,25 @@ export default {
     }
   },
   methods: {
+    // 投稿取得
     getMessages () {
       axios.get(this.url)
         .then((res) => {
           this.messages = res.data
+          // 投稿日時の表記調整↓
+          this.messages.forEach(message => {
+            message.created_at = moment(message.created_at).format('YYYY年MM月DD日 HH時mm分')
+          })
         })
     },
+    // 投稿削除
     deleteMessage (id) {
       axios.delete(this.url + id)
         .then((res) => {
           this.getMessages()
         })
     },
+    // 投稿追加
     submit () {
       let params = new URLSearchParams()
       params.append('name', this.newMessage.name)

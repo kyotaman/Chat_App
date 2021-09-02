@@ -18,8 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// メッセージ関連
 Route::get('/messages', 'MessageController@index');
 Route::post('/messages', 'MessageController@store');
-Route::get('/messages/{message}', 'MessageController@show');
-Route::put('/messages/{message}', 'MessageController@update');
 Route::delete('/messages/{message}', 'MessageController@destroy');

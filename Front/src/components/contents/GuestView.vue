@@ -46,7 +46,7 @@
                     inlineblock
                     large
                     elevation="2"
-                    v-bind:to="{name: 'Top'}">
+                    v-bind:to="{name: 'top'}">
                     ログイン
                     </v-btn>
 
@@ -64,9 +64,7 @@
 </template>
 
 <script>
-import axios from 'axios'
-import moment from 'moment'
-axios.defaults.baseURL = 'http://localhost:78'
+import {axios, moment} from '../../router/index'
 
 export default {
   data: function () {
@@ -76,10 +74,12 @@ export default {
     }
   },
   methods: {
+    // 投稿取得
     getMessages () {
       axios.get(this.url)
         .then((res) => {
           this.messages = res.data
+          // 投稿日時の表記調整↓
           this.messages.forEach(message => {
             message.created_at = moment(message.created_at).format('YYYY年MM月DD日 HH時mm分')
           })
