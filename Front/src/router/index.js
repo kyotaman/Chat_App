@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Message from '@/components/Message'
-import MessageShow from '@/components/MessageShow'
+
+import Top from '@/components/contents/Top'
+import Header from '@/components/common/Header'
+import Footer from '@/components/common/Footer'
+import Message from '@/components/contents/Message'
+import GuestView from '@/components/contents/GuestView'
+import Register from '@/components/contents/Register'
 
 Vue.use(Router)
 
@@ -11,8 +15,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'Top',
+      component: Top
     },
     {
       path: '/chat',
@@ -20,10 +24,17 @@ export default new Router({
       component: Message
     },
     {
-      path: '/chat/:messageId',
-      name: 'chat.show',
-      component: MessageShow,
-      props: true
+      path: '/guest',
+      name: 'guest',
+      component: GuestView
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     }
   ]
 })
+
+Vue.component('header-component', Header)
+Vue.component('footer-component', Footer)
