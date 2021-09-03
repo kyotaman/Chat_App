@@ -2,13 +2,11 @@
     <v-container>
         <v-row class="text-center" justify="center">
             <v-col class="mb-10 mt-10">
-                <v-card outlined>
-                    <h1 class="mt-6 mb-6">Welcome to Chat App</h1>
-                    <p>
-                        ゲストログインでチャット内容を閲覧できます。<br>
-                        （投稿はできません）
-                    </p>
-                </v-card>
+                <h1 class="mt-6 mb-6 teal--text">Welcome to Chat App</h1>
+                <p>
+                    <span class="font-weight-bold">ゲストログインでチャットを閲覧できます。<br></span>
+                    <small class="grey--text">※ゲストログイン時は投稿機能が制限されます</small>
+                </p>
             </v-col>
         </v-row>
 
@@ -19,7 +17,8 @@
                     class="font-weigth-bold teal lighten-5"
                     justify="center"
                     align-content="center"
-                    >ログイン
+                    >
+                    <span class="font-weight-bold">ログイン</span>
                     </v-card-title>
 
                     <v-text-field

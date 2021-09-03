@@ -90,5 +90,4 @@ export default {
     this.getMessages()
   }
 }
-
 </script>

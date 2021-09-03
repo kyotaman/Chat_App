@@ -7,7 +7,8 @@
                     class="font-weigth-bold teal lighten-5"
                     justify="center"
                     align-content="center"
-                    >新規ユーザー登録
+                    >
+                    <span class="font-weight-bold">新規ユーザー登録</span>
                     </v-card-title>
 
                     <v-text-field
