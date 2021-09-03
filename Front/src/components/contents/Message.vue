@@ -37,6 +37,7 @@
                             <td>{{ message.created_at }}</td>
                             <td>
                                 <v-btn
+                                  v-if="message.name === username"
                                   class="deep-orange white--text"
                                   inlineblock
                                   @click="deleteMessage(message.id)">
@@ -53,17 +54,21 @@
                   <div class="mx-10">
                       <form>
                         <v-text-field
-                          v-model="newMessage.name"
+                        class="font-weight-bold"
+                          v-model="newMessageName"
                           label="Name"
                           height="20px"
+                          readonly
                           required
                         ></v-text-field>
                         <v-text-field
-                          v-model="newMessage.body"
+                          class="font-weight-bold"
+                          v-model="newMessageBody"
                           label="Content"
                           height="100px"
                           required
                         ></v-text-field>
+                        <p v-show="errorCheck" class="red--text">入力内容を確認してください</p>
                         <v-card
                           class="d-flex justify-space-between"
                           flat
@@ -96,10 +101,13 @@
 import {axios, moment} from '../../router/index'
 
 export default {
+  props: ['token', 'username'],
   data: function () {
     return {
       messages: [],
-      newMessage: [],
+      newMessageName: '',
+      newMessageBody: '',
+      errorCheck: false,
       url: 'api/messages/'
     }
   },
@@ -125,18 +133,23 @@ export default {
     // 投稿追加
     submit () {
       let params = new URLSearchParams()
-      params.append('name', this.newMessage.name)
-      params.append('body', this.newMessage.body)
-
-      axios.post(this.url, params)
-        .then((res) => {
-          this.newMessage = []
-          this.getMessages()
-        })
+      params.append('name', this.newMessageName)
+      params.append('body', this.newMessageBody)
+      if (!this.newMessageName || !this.newMessageBody) {
+        this.errorCheck = true
+      } else {
+        axios.post(this.url, params)
+          .then((res) => {
+            this.newMessageBody = ''
+            this.getMessages()
+            this.errorCheck = false
+          })
+      }
     }
   },
   mounted () {
     this.getMessages()
+    this.newMessageName = this.username
   }
 }
 </script>

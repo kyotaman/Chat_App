@@ -58,24 +58,28 @@ export default {
     return {
       username: '',
       password: '',
-      url: 'api/user/'
+      token: '',
+      url: 'api/register'
     }
   },
   methods: {
     register () {
-      var url = '/register'
-      var params = {
-        username: this.username,
-        password: this.password
-      }
-      axios.post(url, params)
+      let params = new URLSearchParams()
+      params.append('name', this.username)
+      params.append('password', this.password)
+      let token = Math.random().toString(32).substring(2)
+      this.token = token
+      params.append('token', this.token)
+
+      axios.post(this.url, params)
         .then((res) => {
-
           // ログイン成功！
-
+          alert('登録が完了しました。ログインページに遷移します。')
+          this.$router.push({ name: 'top' })
         })
         .catch((err) => {
           // ログイン失敗
+          alert('登録に失敗しました。入力を確認してください')
           console.log(err)
         })
     }

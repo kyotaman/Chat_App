@@ -28,7 +28,8 @@ export default new Router({
     {
       path: '/chat',
       name: 'chat',
-      component: Message
+      component: Message,
+      props: true
     },
     {
       path: '/guest',

@@ -22,3 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/messages', 'MessageController@index');
 Route::post('/messages', 'MessageController@store');
 Route::delete('/messages/{message}', 'MessageController@destroy');
+
+// ユーザー認証関連
+Route::post('/login', 'AccountController@login');
+Route::post('/register', 'AccountController@register');

@@ -92,20 +92,21 @@ export default {
     return {
       username: '',
       password: '',
-      url: 'api/user/'
+      token: '',
+      url: 'api/login/'
     }
   },
   methods: {
     login () {
-      var params = {
-        username: this.username,
-        password: this.password
-      }
-      axios.post('/login', params)
+      let params = new URLSearchParams()
+      params.append('name', this.username)
+      params.append('password', this.password)
+
+      axios.post(this.url, params)
         .then((res) => {
-
           // ログイン成功！
-
+          this.token = res.data.token
+          this.$router.push({ name: 'chat', params: {token: this.token, username: this.username} })
         })
         .catch((err) => {
           // ログイン失敗
