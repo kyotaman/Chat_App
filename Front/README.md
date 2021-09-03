@@ -1,7 +1,8 @@
 # chat_app_front
 
 > A Vue.js project
-
+axiosを使用した非同期チャットアプリです。
+DBへの接続はAPIディレクトリに設定されているAPIを経由して行っています。
 ## Build Setup
 
 ``` bash
@@ -11,20 +12,7 @@ npm install
 # serve with hot reload at localhost:8080
 npm run dev
 
-# build for production with minification
-npm run build
+index.jsにて接続先のBaseURLを設定しています。
+使用している環境によって変更してください。
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+API側のセットアップも必要です。
