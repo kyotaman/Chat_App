@@ -89,7 +89,8 @@
                         <v-btn
                         class="teal lighten-3  white--text font-weight-bold mt-10 mb-4 px-12"
                         inlineblock
-                        v-bind:to="{name: 'top'}">
+                        @click="logout"
+                        >
                         ログアウト
                         </v-btn>
                         </v-card>
@@ -112,8 +113,14 @@ export default {
       messages: [],
       newMessageName: '',
       newMessageBody: '',
+      usertoken: '',
       errorCheck: false,
       url: 'api/messages/'
+    }
+  },
+  watch: {
+    token: function () {
+      localStorage.setItem('usertoken', JSON.stringify(this.usertoken))
     }
   },
   methods: {
@@ -130,10 +137,12 @@ export default {
     },
     // 投稿削除
     deleteMessage (id) {
-      axios.delete(this.url + id)
-        .then((res) => {
-          this.getMessages()
-        })
+      if (confirm('投稿を削除しますか？')) {
+        axios.delete(this.url + id)
+          .then((res) => {
+            this.getMessages()
+          })
+      }
     },
     // 投稿追加
     submit () {
@@ -150,12 +159,25 @@ export default {
             this.errorCheck = false
           })
       }
+    },
+    // ログアウト
+    logout () {
+      localStorage.removeItem('usertoken')
+      alert('ログアウトしました。')
+      this.$router.push({ name: 'top' })
     }
   },
   mounted () {
     this.getMessages()
-    // 受け取ったユーザー名の反映
+    // 受け取った値の反映
     this.newMessageName = this.username
+    // トークン処理 優先順位はprops,localStorageの順
+    // トークンがない場合はトップページへ遷移
+    this.usertoken = this.token || JSON.parse(localStorage.getItem('usertoken')) || ''
+    localStorage.setItem('usertoken', JSON.stringify(this.usertoken))
+    if (!this.usertoken) {
+      this.$router.push({ name: 'top' })
+    }
   }
 }
 </script>
