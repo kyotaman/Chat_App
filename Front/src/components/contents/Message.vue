@@ -36,6 +36,7 @@
                             <td>{{ message.name }}</td>
                             <td>{{ message.created_at }}</td>
                             <td>
+                              <!-- ログインユーザーの投稿にのみ削除ボタンを設置 -->
                                 <v-btn
                                   v-if="message.name === username"
                                   class="deep-orange white--text"
@@ -53,6 +54,7 @@
               <v-col>
                   <div class="mx-10">
                       <form>
+                        <!-- ユーザー名埋め込み 変更不可にする -->
                         <v-text-field
                         class="font-weight-bold"
                           v-model="newMessageName"
@@ -61,6 +63,7 @@
                           readonly
                           required
                         ></v-text-field>
+
                         <v-text-field
                           class="font-weight-bold"
                           v-model="newMessageBody"
@@ -68,7 +71,9 @@
                           height="100px"
                           required
                         ></v-text-field>
+                          <!-- 投稿送信エラー時に表示↓ -->
                         <p v-show="errorCheck" class="red--text">入力内容を確認してください</p>
+
                         <v-card
                           class="d-flex justify-space-between"
                           flat
@@ -140,8 +145,8 @@ export default {
       } else {
         axios.post(this.url, params)
           .then((res) => {
-            this.newMessageBody = ''
             this.getMessages()
+            this.newMessageBody = ''
             this.errorCheck = false
           })
       }
@@ -149,6 +154,7 @@ export default {
   },
   mounted () {
     this.getMessages()
+    // 受け取ったユーザー名の反映
     this.newMessageName = this.username
   }
 }

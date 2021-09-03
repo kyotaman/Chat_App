@@ -67,6 +67,7 @@ export default {
       let params = new URLSearchParams()
       params.append('name', this.username)
       params.append('password', this.password)
+      // 認証用トークンの仕込み
       let token = Math.random().toString(32).substring(2)
       this.token = token
       params.append('token', this.token)
