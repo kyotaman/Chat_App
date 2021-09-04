@@ -24,11 +24,11 @@
                     <v-text-field
                     input
                     type="text"
-                    name="username"
+                    name="userName"
                     label="ユーザー名"
                     hint="ユーザー名を入力してください"
                     required
-                    v-model="username"
+                    v-model="userName"
                     ></v-text-field>
 
                     <v-text-field
@@ -40,7 +40,9 @@
                     required
                     v-model="password"
                     ></v-text-field>
-
+                    <small class="red--text" v-show="loginCheck">
+                      メールアドレスかパスワードが間違っています
+                    </small>
                     <div class="mt-4">
                           <v-btn
                           class="login"
@@ -90,27 +92,28 @@ axios.defaults.baseURL = 'http://localhost:78'
 export default {
   data: function () {
     return {
-      username: '',
+      userName: '',
       password: '',
       token: '',
+      loginCheck: false,
       url: 'api/login/'
     }
   },
   methods: {
     login () {
       let params = new URLSearchParams()
-      params.append('name', this.username)
+      params.append('name', this.userName)
       params.append('password', this.password)
 
       axios.post(this.url, params)
         .then((res) => {
-          // ログイン成功！
+          // トークンと名前の値をMessage.vueへ渡す
           this.token = res.data.token
-          this.$router.push({ name: 'chat', params: {token: this.token, username: this.username} })
+          this.$router.push({ name: 'chat', params: {token: this.token, userName: this.userName} })
         })
+        // eslint-disable-next-line handle-callback-err
         .catch((err) => {
-          // ログイン失敗
-          console.log(err)
+          this.loginCheck = true
         })
     }
   }

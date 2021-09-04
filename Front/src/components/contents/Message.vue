@@ -38,7 +38,7 @@
                             <td>
                               <!-- ログインユーザーの投稿にのみ削除ボタンを設置 -->
                                 <v-btn
-                                  v-if="message.name === username"
+                                  v-if="message.name === MessageName"
                                   class="deep-orange white--text"
                                   inlineblock
                                   @click="deleteMessage(message.id)">
@@ -57,7 +57,7 @@
                         <!-- ユーザー名埋め込み 変更不可にする -->
                         <v-text-field
                         class="font-weight-bold"
-                          v-model="newMessageName"
+                          v-model="MessageName"
                           label="Name"
                           height="20px"
                           readonly
@@ -66,13 +66,13 @@
 
                         <v-text-field
                           class="font-weight-bold"
-                          v-model="newMessageBody"
+                          v-model="MessageBody"
                           label="Content"
                           height="100px"
                           required
                         ></v-text-field>
                           <!-- 投稿送信エラー時に表示↓ -->
-                        <p v-show="errorCheck" class="red--text">入力内容を確認してください</p>
+                        <p v-show="sendCheck" class="red--text">入力内容を確認してください</p>
 
                         <v-card
                           class="d-flex justify-space-between"
@@ -107,20 +107,20 @@
 import {axios, moment} from '../../router/index'
 
 export default {
-  props: ['token', 'username'],
+  props: ['token', 'userName'],
   data: function () {
     return {
       messages: [],
-      newMessageName: '',
-      newMessageBody: '',
-      usertoken: '',
-      errorCheck: false,
+      MessageName: '',
+      MessageBody: '',
+      userToken: '',
+      sendCheck: false,
       url: 'api/messages/'
     }
   },
   watch: {
     token: function () {
-      localStorage.setItem('usertoken', JSON.stringify(this.usertoken))
+      localStorage.setItem('userToken', JSON.stringify(this.userToken))
     }
   },
   methods: {
@@ -147,36 +147,39 @@ export default {
     // 投稿追加
     submit () {
       let params = new URLSearchParams()
-      params.append('name', this.newMessageName)
-      params.append('body', this.newMessageBody)
-      if (!this.newMessageName || !this.newMessageBody) {
-        this.errorCheck = true
+      params.append('name', this.MessageName)
+      params.append('body', this.MessageBody)
+      if (!this.MessageName || !this.MessageBody) {
+        this.sendCheck = true
       } else {
         axios.post(this.url, params)
           .then((res) => {
             this.getMessages()
-            this.newMessageBody = ''
-            this.errorCheck = false
+            this.MessageBody = ''
+            this.sendCheck = false
+          }).catch((err) => {
+            console.log(err)
           })
       }
     },
     // ログアウト
     logout () {
-      localStorage.removeItem('usertoken')
+      localStorage.clear()
       alert('ログアウトしました。')
       this.$router.push({ name: 'top' })
     }
   },
   mounted () {
-    this.getMessages()
-    // 受け取った値の反映
-    this.newMessageName = this.username
-    // トークン処理 優先順位はprops,localStorageの順
-    // トークンがない場合はトップページへ遷移
-    this.usertoken = this.token || JSON.parse(localStorage.getItem('usertoken')) || ''
-    localStorage.setItem('usertoken', JSON.stringify(this.usertoken))
-    if (!this.usertoken) {
+    this.userToken = this.token || JSON.parse(localStorage.getItem('userToken'))
+    this.MessageName = this.userName || JSON.parse(localStorage.getItem('userName'))
+    // トークンと名前が両方ある場合のみページ表示
+    if (!this.userToken || !this.MessageName) {
       this.$router.push({ name: 'top' })
+    } else {
+      this.getMessages()
+      // リロードしても情報を保持するため、保存
+      localStorage.setItem('userName', JSON.stringify(this.MessageName))
+      localStorage.setItem('userToken', JSON.stringify(this.userToken))
     }
   }
 }
