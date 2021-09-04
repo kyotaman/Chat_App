@@ -14,11 +14,11 @@
                     <v-text-field
                     input
                     type="text"
-                    name="username"
+                    name="userName"
                     label="ユーザー名"
                     hint="ユーザー名を入力してください"
                     required
-                    v-model="username"
+                    v-model="userName"
                     ></v-text-field>
 
                     <v-text-field
@@ -56,7 +56,7 @@ axios.defaults.baseURL = 'http://localhost:78'
 export default {
   data: function () {
     return {
-      username: '',
+      userName: '',
       password: '',
       token: '',
       url: 'api/register'
@@ -65,21 +65,19 @@ export default {
   methods: {
     register () {
       let params = new URLSearchParams()
-      params.append('name', this.username)
+      params.append('name', this.userName)
       params.append('password', this.password)
-      // 認証用トークンの仕込み
+      // 認証用トークンも仕込む
       let token = Math.random().toString(32).substring(2)
       this.token = token
       params.append('token', this.token)
 
       axios.post(this.url, params)
         .then((res) => {
-          // ログイン成功！
           alert('登録が完了しました。ログインページに遷移します。')
           this.$router.push({ name: 'top' })
         })
         .catch((err) => {
-          // ログイン失敗
           alert('登録に失敗しました。入力を確認してください')
           console.log(err)
         })

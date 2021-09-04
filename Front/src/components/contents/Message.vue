@@ -50,6 +50,7 @@
                     </tbody>
                 </template>
             </v-simple-table>
+
             <v-row>
               <v-col>
                   <div class="mx-10">
@@ -98,6 +99,31 @@
                   </div>
               </v-col>
             </v-row>
+            <!-- 投稿＆削除完了バー↓ -->
+            <div class="text-center">
+              <v-snackbar
+                v-model="deleteBar"
+                :timeout="timeout"
+                :multi-line="multiLine"
+                color="teal"
+                centered
+              >
+                投稿を削除しました。
+              </v-snackbar>
+            </div>
+
+            <div class="text-center">
+              <v-snackbar
+                v-model="sendBar"
+                :timeout="timeout"
+                :multi-line="multiLine"
+                color="teal"
+                centered
+              >
+                投稿を反映しました。
+              </v-snackbar>
+            </div>
+
         </v-col>
     </v-row>
 </template>
@@ -115,6 +141,10 @@ export default {
       MessageBody: '',
       userToken: '',
       sendCheck: false,
+      deleteBar: false,
+      sendBar: false,
+      multiLine: true,
+      timeout: 1300,
       url: 'api/messages/'
     }
   },
@@ -141,6 +171,7 @@ export default {
         axios.delete(this.url + id)
           .then((res) => {
             this.getMessages()
+            this.deleteBarDisplay()
           })
       }
     },
@@ -157,6 +188,7 @@ export default {
             this.getMessages()
             this.MessageBody = ''
             this.sendCheck = false
+            this.sendBar = true
           }).catch((err) => {
             console.log(err)
           })
@@ -167,6 +199,14 @@ export default {
       localStorage.clear()
       alert('ログアウトしました。')
       this.$router.push({ name: 'top' })
+    },
+    // 削除完了バーの表示処理
+    deleteBarDisplay () {
+      this.deleteBar = true
+    },
+    // 投稿追加完了バーの表示処理
+    sendBarDisplay () {
+      this.sendBar = true
     }
   },
   mounted () {
