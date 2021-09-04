@@ -1,15 +1,33 @@
 # name
+
 Chat_App
 
+
 # discription
-ユーザー認証機能、CRUD機能を実装した簡潔なチャットアプリです。
-フロントエンドはVue.js
-バックエンドはPHP(Laravel)
+
+ユーザー認証機能、CRUD機能を実装した簡潔なチャットアプリです。  
+フロントエンドはVue.js  
+バックエンドはPHP(Laravel)  
 で作成しています。
-バックエンドのみdocker環境を使用しました。
+バックエンドのみdocker環境を使用しました。  
+
+_使用ライブラリ_  
+・axios.js  
+・moment.js  
+・Vuetify  
+
+# function
+
+_実装した機能_  
+
+・ユーザー認証(新規登録、ログイン、ログアウト)  
+・外部APIによるCRUD操作(Read, Delete)  
+
+※delete機能はユーザー認証と連携し、ログインユーザーの投稿のみ削除できる設定にしています。
 
 # setting
-環境構築手順 (参考環境:Mac OS11.4 M1チップ)
+
+環境再現手順 (参考環境:Mac OS11.4 M1チップ)  
 
 _1._  
 Chat_App/API ディレクトリ直下にあるdocker-compose.ymlを確認してください。  
