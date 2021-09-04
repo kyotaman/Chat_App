@@ -22,23 +22,25 @@
                     </v-card-title>
 
                     <v-text-field
+                    v-model.trim="userName"
                     input
                     type="text"
                     name="userName"
                     label="ユーザー名"
                     hint="ユーザー名を入力してください"
                     required
-                    v-model="userName"
                     ></v-text-field>
 
                     <v-text-field
+                    v-model.trim="password"
                     type="password"
                     name="password"
                     label="パスワード"
-                    hint="パスワードを入力してください。(8桁)"
-                    :counter="8"
+                    hint="パスワードを入力してください"
+                    :counter="maxPassLength"
+                    :counter-value="v => v.trim().length"
+                    :rules="rules"
                     required
-                    v-model="password"
                     ></v-text-field>
                     <small class="red--text" v-show="loginCheck">
                       メールアドレスかパスワードが間違っています
@@ -95,6 +97,8 @@ export default {
       userName: '',
       password: '',
       token: '',
+      maxPassLength: 8, // パスワードの最大値
+      rules: [v => v.trim().length <= 8 || 'パスワードは最大8文字までです。'], // パスワードルール
       loginCheck: false,
       url: 'api/login/'
     }

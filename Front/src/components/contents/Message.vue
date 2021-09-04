@@ -67,13 +67,13 @@
 
                         <v-text-field
                           class="font-weight-bold"
-                          v-model="MessageBody"
+                          v-model.trim="MessageBody"
                           label="Content"
                           height="100px"
                           required
                         ></v-text-field>
                           <!-- 投稿送信エラー時に表示↓ -->
-                        <p v-show="sendCheck" class="red--text">入力内容を確認してください</p>
+                        <p v-show="sendCheck" class="red--text">送信エラー：入力内容を確認してください</p>
 
                         <v-card
                           class="d-flex justify-space-between"
@@ -105,7 +105,7 @@
                 v-model="deleteBar"
                 :timeout="timeout"
                 :multi-line="multiLine"
-                color="teal"
+                color="teal lighten-1"
                 centered
               >
                 投稿を削除しました。
@@ -117,7 +117,7 @@
                 v-model="sendBar"
                 :timeout="timeout"
                 :multi-line="multiLine"
-                color="teal"
+                color="teal lighten-1"
                 centered
               >
                 投稿を反映しました。
@@ -170,28 +170,32 @@ export default {
       if (confirm('投稿を削除しますか？')) {
         axios.delete(this.url + id)
           .then((res) => {
-            this.getMessages()
             this.deleteBarDisplay()
+            this.getMessages()
           })
       }
     },
     // 投稿追加
     submit () {
-      let params = new URLSearchParams()
-      params.append('name', this.MessageName)
-      params.append('body', this.MessageBody)
-      if (!this.MessageName || !this.MessageBody) {
-        this.sendCheck = true
-      } else {
+      // 両方に空白以外の値があれば送信する。エラー時はelse以下
+      if (this.MessageName && this.MessageBody) {
+        let params = new URLSearchParams()
+        params.append('name', this.MessageName)
+        params.append('body', this.MessageBody)
+
         axios.post(this.url, params)
           .then((res) => {
-            this.getMessages()
             this.MessageBody = ''
             this.sendCheck = false
             this.sendBar = true
+            this.getMessages()
           }).catch((err) => {
+            //  APIが通らなかった時
+            alert('正常に送信できませんでした。')
             console.log(err)
           })
+      } else {
+        this.sendCheck = true
       }
     },
     // ログアウト
