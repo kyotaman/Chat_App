@@ -16,9 +16,6 @@ Chat_App/API ディレクトリ直下にあるdocker-compose.ymlを確認して�
 いくつかの項目で環境変数を指定しているので、必要に応じて.envファイルを作成するか、
 docker-compose.ymlを書き換えてください。  
 
-_【注意】_  
-DB_DATABASE=chat_app  となっている部分は書き換えないでください。  
-動作確認に必要なテーブルやデータが既に入っています。
 
 
 
@@ -42,9 +39,14 @@ Chat_App/API/src ディレクトリ直下に.envファイルを作成します�
 同階層に置かれている.envexampleをコピー＆ペーストし、12~14行目を修正します。  
 Chat_App/API/.envと合致するように修正してください。  
 
-_【注意】_  
-ここでもDB_DATABASE=chat_app を指定してください.  
+_【補足】_  
+Chat_App/APIディレクトリ上で  
+`% docker exec db bash` を入力することでDBコンテナへ入ることができます。  
+・.envで指定したDATABASEが存在すること  
+・指定したDB内にaccounts テーブル, messages テーブルが存在すること  
+を確認しておいてください。  
 
+存在しない場合は、Chat_App/API/src/database/migrationsディレクトリを参考に作成してください。
 
 
 _5._  
