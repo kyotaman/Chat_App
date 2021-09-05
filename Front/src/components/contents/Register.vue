@@ -19,6 +19,7 @@
                     label="ユーザー名"
                     hint="ユーザー名を入力してください"
                     required
+                    autofocus
                     ></v-text-field>
 
                     <v-text-field
@@ -53,7 +54,6 @@
 
 <script>
 import axios from 'axios'
-axios.defaults.baseURL = 'http://localhost:78'
 
 export default {
   data: function () {

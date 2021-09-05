@@ -99,6 +99,7 @@
                   </div>
               </v-col>
             </v-row>
+
             <!-- 投稿＆削除完了バー↓ -->
             <div class="text-center">
               <v-snackbar
