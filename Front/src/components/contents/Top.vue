@@ -12,7 +12,7 @@
 
         <v-row justify="center">
             <div>
-                <v-card class="card" flat width="540">
+                <v-card class="card" flat width="540" @keyup.enter="login">
                     <v-card-title
                     class="font-weigth-bold teal lighten-5"
                     justify="center"
@@ -44,7 +44,7 @@
                     required
                     ></v-text-field>
                     <small class="red--text" v-show="loginCheck">
-                      メールアドレスかパスワードが間違っています
+                      入力内容を確認してください。
                     </small>
                     <div class="mt-4">
                           <v-btn
@@ -105,20 +105,24 @@ export default {
   },
   methods: {
     login () {
-      let params = new URLSearchParams()
-      params.append('name', this.userName)
-      params.append('password', this.password)
+      if (this.userName && this.password) {
+        let params = new URLSearchParams()
+        params.append('name', this.userName)
+        params.append('password', this.password)
 
-      axios.post(this.url, params)
-        .then((res) => {
-          // トークンと名前の値をMessage.vueへ渡す
-          this.token = res.data.token
-          this.$router.push({ name: 'chat', params: {token: this.token, userName: this.userName} })
-        })
-        // eslint-disable-next-line handle-callback-err
-        .catch((err) => {
-          this.loginCheck = true
-        })
+        axios.post(this.url, params)
+          .then((res) => {
+            // トークンと名前の値をMessage.vueへ渡す
+            this.token = res.data.token
+            this.$router.push({ name: 'chat', params: {token: this.token, userName: this.userName} })
+          })
+          // eslint-disable-next-line handle-callback-err
+          .catch((err) => {
+            this.loginCheck = true
+          })
+      } else {
+        this.loginCheck = true
+      }
     }
   }
 }

@@ -6,7 +6,7 @@
               height="450px"
               class="mt-8 mb-6 mx-4"
             >
-                <template v-slot:default>
+                <template>
                     <thead>
                         <tr>
                             <th class="text-left teal lighten-5">
